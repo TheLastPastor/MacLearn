@@ -52,6 +52,11 @@ def compute_cost(X, y, theta):
     J = 0
 
     # YOUR CODE HERE
+    m, n = X.shape
+    predictions = np.matmul(X, theta)
+    diff = predictions - y
+    squared_diff = diff ** 2
+    J = np.sum(squared_diff) / (2 * m)
 
     return J
 
