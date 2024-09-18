@@ -5,6 +5,7 @@ from matplotlib import cm
 import matplotlib.mlab as mlab
 
 def draw_graph(data):
+    return
     #OPGAVE 1
     # Maak een scatter-plot van de data die als parameter aan deze functie wordt meegegeven. Deze data
     # is een twee-dimensionale matrix met in de eerste kolom de grootte van de steden, in de tweede
@@ -81,7 +82,17 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     #      alpha keer het gemiddelde van de som van de vermenigvuldiging uit 3
 
     m,n = X.shape
+    print(y)
     costs = []
+    for i in range(num_iters):
+
+        predictions = np.matmul(X, theta.T)
+        diff = predictions - y
+        print(diff.T, X)
+        sum_diff = np.matmul(diff.T, X)
+        theta = theta - (alpha / m) * sum_diff.T/m
+        costs.append(compute_cost(X, y, theta))
+    # print(predictions, diff, sum_diff, theta)
 
     # YOUR CODE HERE
 
