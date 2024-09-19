@@ -82,16 +82,17 @@ def gradient_descent(X, y, theta, alpha, num_iters):
     #      alpha keer het gemiddelde van de som van de vermenigvuldiging uit 3
 
     m,n = X.shape
-    print(y)
     costs = []
-    for i in range(num_iters):
-
-        predictions = np.matmul(X, theta.T)
-        diff = predictions - y
-        print(diff.T, X)
-        sum_diff = np.matmul(diff.T, X)
-        theta = theta - (alpha / m) * sum_diff.T/m
-        costs.append(compute_cost(X, y, theta))
+    # for i in range(num_iters):
+    predictions = np.dot(X, theta.T)
+    diff = predictions - y
+    print(diff)
+    #     predictions = np.matmul(X, theta.T)
+    #     diff = predictions - y
+    #     print(diff.T, X)
+    #     sum_diff = np.matmul(diff.T, X)
+    #     theta = theta - (alpha / m) * sum_diff.T/m
+    #     costs.append(compute_cost(X, y, theta))
     # print(predictions, diff, sum_diff, theta)
 
     # YOUR CODE HERE
