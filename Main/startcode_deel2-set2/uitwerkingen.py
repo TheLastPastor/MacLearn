@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.ma.core import ravel
 from scipy.sparse import csr_matrix
 
 # ==== OPGAVE 1 ====
@@ -37,7 +38,12 @@ def get_y_matrix(y, m):
     # In dit geval is de breedte van de matrix 10 (0-9),
     # maar de methode moet werken voor elke waarde van y en m
 
-    #YOUR CODE HERE
+    data = np.ones(m,)
+    row = np.arange(m,)
+    y = y - 1
+    y = y.ravel()
+    return csr_matrix((data, (row, y)), shape=(m, 10))
+
     pass
 
 # ==== OPGAVE 2c ==== 
