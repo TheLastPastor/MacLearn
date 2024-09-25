@@ -21,6 +21,8 @@ def sigmoid(z):
     # voor dat de code zowel werkt wanneer z een getal is als wanneer z een
     # vector is.
     # Maak gebruik van de methode exp() in NumPy.
+    return 1 / (1 + np.exp(-z))
+
 
     pass
 
