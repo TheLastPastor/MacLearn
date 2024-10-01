@@ -72,6 +72,13 @@ def predict_number(Theta2, Theta3, X):
     # Voeg enen toe aan het begin van elke stap en reshape de uiteindelijke
     # vector zodat deze dezelfde dimensionaliteit heeft als y in de exercise.
 
+    a1 = np.c_[np.ones(X.shape[0]), X]
+    a2 = sigmoid(np.matmul(a1, Theta2.T))
+    a2 = np.c_[np.ones(a2.shape[0]), a2]
+    a3 = sigmoid(np.matmul(a2, Theta3.T))
+
+    return a3
+
     pass
 
 
@@ -85,7 +92,14 @@ def compute_cost(Theta2, Theta3, X, y):
     # geretourneerd.
     # Let op: de y die hier binnenkomt is de m×1-vector met waarden van 1...10. 
     # Maak gebruik van de methode get_y_matrix() die je in opgave 2a hebt gemaakt
-    # om deze om te zetten naar een ijle matrix. 
+    # om deze om te zetten naar een ijle matrix.
+
+    predictions = predict_number(Theta2, Theta3, X)
+    m = predictions.shape[0]
+    y_matrix = get_y_matrix(y, m)
+    cost = abs(predictions - y_matrix)
+
+    return np.sum(cost) / m
 
     pass
 
