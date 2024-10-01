@@ -23,7 +23,7 @@ def draw_graph(data):
 
     #YOUR CODE HERE
     # data opslaan in variabelen x en y
-    x, y = [data[:, 0], data[:, 1]]
+    x, y = data.T # [data[:, 0], data[:, 1]]
 
     # Zet de waarden in een plot en voeg labels toe aan de assen.
     plt.scatter(x, y)
