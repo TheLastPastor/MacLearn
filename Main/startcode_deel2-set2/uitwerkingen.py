@@ -1,6 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from astropy.wcs.docstrings import delta
 from numpy.ma.core import ravel
 from scipy.sparse import csr_matrix
 
@@ -26,8 +27,6 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
-    pass
-
 
 # ==== OPGAVE 2b ====
 def get_y_matrix(y, m):
@@ -43,7 +42,7 @@ def get_y_matrix(y, m):
     row = np.arange(m,)
     y = y - 1
     y = y.ravel()
-    return csr_matrix((data, (row, y)), shape=(m, 10))
+    return csr_matrix((data, (row, y)), shape=(m, 10)).todense()
 
     pass
 
@@ -97,9 +96,10 @@ def compute_cost(Theta2, Theta3, X, y):
 
     predictions = predict_number(Theta2, Theta3, X)
     # log loss cost function
-    cost = -(1/len(y)) * np.sum(y_matrix * np.log(predictions) + (1 - y_matrix) * np.log(1 - predictions))
+    # cost = -(1/len(y)) * np.sum(y_matrix * np.log(predictions) + (1 - y_matrix) * np.log(1 - predictions))
+    cost = -(1 / y.shape[0]) * np.sum(np.multiply(y_matrix, np.log(predictions)) + np.multiply((1 - y_matrix), np.log(1 - predictions)))
+
     return cost
-    pass
 
 
 
@@ -108,23 +108,41 @@ def sigmoid_gradient(z):
     # Retourneer hier de waarde van de afgeleide van de sigmoïdefunctie.
     # Zie de opgave voor de exacte formule. Controleer dat deze werkt met
     # scalaire waarden en met vectoren.
-
-    pass
+    sigmoid_value = sigmoid(z)
+    return sigmoid_value * (1 - sigmoid_value)
 
 # ==== OPGAVE 3b ====
-def nn_check_gradients(Theta2, Theta3, X, y): 
-    # Retourneer de gradiënten van Theta1 en Theta2, gegeven de waarden van X en van y
-    # Zie het stappenplan in de opgaven voor een mogelijke uitwerking.
-
+def nn_check_gradients(Theta2, Theta3, X, y):
+    # gewichten input laag en verborgen laag
     Delta2 = np.zeros(Theta2.shape)
+    # gewichten verborgen laag en output laag
     Delta3 = np.zeros(Theta3.shape)
-    m = 1 # voorbeeldwaarde; dit moet je natuurlijk aanpassen naar de echte waarde van m
 
-    for i in range(m): 
-        #YOUR CODE HERE
-        pass
+    m = X.shape[0]
+    for i in range(m):
+        # add bias aan inputvector
+        a1 = np.r_[1, X[i]]
+        # forward propagation
+        z2 = np.dot(Theta2, a1) # activatie verborgen laag
+        a2 = np.r_[1, sigmoid(z2)] # output verborgen laag na sigmoid functie en add bias
+        z3 = np.dot(Theta3, a2) # activatie output laag
+        a3 = sigmoid(z3) # output laag
 
+        # Bereken error voor de output layer
+        y_matrix = get_y_matrix(y, m)
+        delta3 = a3 - y_matrix[i, :].A1 # fout in de outputlaag
+
+        # Bereken error voor de hidden layer 
+        delta2 = np.dot(Theta3.T, delta3) * sigmoid_gradient(np.r_[1, z2])
+        delta2 = delta2[1:]  # Verwijder bias
+
+        # Sum gradients
+        Delta3 += np.outer(delta3, a2)
+        Delta2 += np.outer(delta2, a1)
+
+    # Bereken gemiddelde van de gradiënten
     Delta2_grad = Delta2 / m
     Delta3_grad = Delta3 / m
-    
+
     return Delta2_grad, Delta3_grad
+
