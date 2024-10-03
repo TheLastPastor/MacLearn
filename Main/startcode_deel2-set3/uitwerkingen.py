@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Input, Dense, Activation
+from pickle import dump
 
 # OPGAVE 1a
 def plot_image(img, label):
@@ -25,6 +28,7 @@ def scale_data(X):
     # Deel alle elementen in de matrix 'element wise' door de grootste waarde in deze matrix.
 
     # YOUR CODE HERE
+    return X / np.max(X)
 
     pass
 
@@ -40,9 +44,15 @@ def build_model():
 
     # Het staat je natuurlijk vrij om met andere settings en architecturen te experimenteren.
 
-    model = None
+    model = Sequential()
 
-    # YOUR CODE HERE
+    model.add(Input(shape=(28, 28)))
+    model.add(tf.keras.layers.Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(10, activation='softmax'))
+
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.summary()
 
     return model
 
@@ -51,5 +61,8 @@ def save_model(model):
     # het exercise-script wordt getraind, en slaat het op op een locatie op je lokale
     # computer.
 
+
+    with open("mnist.pkl", "wb") as f:
+        dump(model, f, protocol=5)
     # YOUR CODE HERE
     pass
