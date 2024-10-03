@@ -130,7 +130,7 @@ def nn_check_gradients(Theta2, Theta3, X, y):
 
         # Bereken error voor de output layer
         y_matrix = get_y_matrix(y, m)
-        delta3 = a3 - y_matrix[i, :].A1 # fout in de outputlaag
+        delta3 = a3 - y_matrix[i, :].A1# fout in de outputlaag
 
         # Bereken error voor de hidden layer 
         delta2 = np.dot(Theta3.T, delta3) * sigmoid_gradient(np.r_[1, z2])
