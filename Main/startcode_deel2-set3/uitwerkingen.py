@@ -61,8 +61,6 @@ def save_model(model):
     # het exercise-script wordt getraind, en slaat het op op een locatie op je lokale
     # computer.
 
+    model.save('mnist.keras')
 
-    with open("mnist.pkl", "wb") as f:
-        dump(model, f, protocol=5)
-    # YOUR CODE HERE
     pass
