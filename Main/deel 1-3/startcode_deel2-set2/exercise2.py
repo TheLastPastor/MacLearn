@@ -47,7 +47,7 @@ def nn_cost_function(Thetas, X, y):
 
 
 #Laden van de data en zetten van de variabelen.
-with open ('week2_data.pkl','rb') as f:
+with open ('week2_data.pkl', 'rb') as f:
     data = pickle.load(f)
 
 X,y = data['X'], data['y']
